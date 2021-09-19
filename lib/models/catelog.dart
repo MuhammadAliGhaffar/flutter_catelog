@@ -10,17 +10,30 @@ class Item {
       this.color,
       this.imageUrl,
       this.price});
+
+  /// Constructor for decode
+  factory Item.fromMap(Map<String, dynamic> map) {
+    return Item(
+      id: map['id'],
+      name: map['name'],
+      description: map['desc'],
+      price: map['price'],
+      color: map['color'],
+      imageUrl: map['image'],
+    );
+  }
+
+  /// Constructor for encode
+  toMap() => {
+        "id": id,
+        "name": name,
+        "desc": description,
+        "price": price,
+        "color": color,
+        "image": imageUrl,
+      };
 }
 
 class CatalogModel {
-  static final items = [
-    Item(
-        id: 1,
-        name: "iPhone 12 Pro",
-        description: "Apple iPhone 12th generation",
-        price: 999,
-        color: "#33505a",
-        imageUrl:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISJ6msIu4AU9_M9ZnJVQVFmfuhfyJjEtbUm3ZK11_8IV9TV25-1uM5wHjiFNwKy99w0mR5Hk&usqp=CAc")
-  ];
+  static List<Item> items=[];
 }
