@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dummyList = List.generate(20, (index) => CatalogModel.items[0]);
+    //final dummyList = List.generate(20, (index) => CatalogModel.items[0]);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,12 +34,39 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: (CatalogModel.items != null && CatalogModel.items.isNotEmpty)
-            ? ListView.builder(
+            ? GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    crossAxisCount: 2),
                 itemCount: CatalogModel.items.length,
                 itemBuilder: (context, index) {
-                  return ItemWidget(
-                    item: CatalogModel.items[index],
-                  );
+                  final item = CatalogModel.items[index];
+                  return Card(
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: GridTile(
+                        header: Container(
+                          child: Text(
+                            item.name!,
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          decoration: BoxDecoration(color: Colors.deepPurple),
+                          padding: EdgeInsets.all(12),
+                        ),
+                        child: Image.network(item.imageUrl!),
+                        footer: Container(
+                          child: Text(
+                            item.price.toString(),
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          decoration: BoxDecoration(color: Colors.black),
+                          padding: EdgeInsets.all(12),
+                        ),
+                      ));
                 },
               )
             : Center(
@@ -52,6 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   /// Loading images from local json in project assets/catalog.json
   void loadData() async {
+    await Future.delayed(Duration(seconds: 2));
     var catalogJson = await rootBundle.loadString("assets/files/catalog.json");
     var decodedData = jsonDecode(catalogJson);
     var productsData = decodedData["products"];
